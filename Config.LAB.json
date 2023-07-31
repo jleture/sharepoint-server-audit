@@ -1,0 +1,5 @@
+{
+    "OutputDir": "C:/Temp",
+	"Sep" : ";",
+	"WebApplications": ["https://your-webapp.local", "https://your-mysites.local"]
+}

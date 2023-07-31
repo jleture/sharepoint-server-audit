@@ -8,6 +8,10 @@ PowerShell scripts to audit SharePoint Server sites
 | **Config.Lab.json** | Configuration file with tenant and SharePoint URL, app registration and CSV separator |
 | **GetSharePointWebParts.ps1** | Script to get webparts used in SharePoint sites |
 | **GetTestContentDatabases.ps1** | Script to get errors in content databases |
+| **GetFormsAndWorkflows.ps1** | Script to get worflows and custom forms |
+| **GetHealthData.ps1** | Script to get errors from the central administration health reports  |
+| **GetTimerJobs.ps1** | Script to get custom timer jobs |
+| **GetSearchConfiguration.ps1** | Script to get search managed properties and the last crawl duration |
 
 ## Prerequisities
 
@@ -33,7 +37,7 @@ To connect to SharePoint, it's better to XXX.
 ~~~
 
 
-## Get webparts
+## Get webparts [GetSharePointWebParts.ps1]
 
 The script has three steps:
 1. Get SharePoint sites
@@ -52,7 +56,7 @@ You can add `-Verbose` to display more information in the terminal.
 .\GetSharePointWebParts.ps1 -Env LAB -OutputFilePath "SharePointWebParts.csv" -Verbose
 ~~~
 
-## Get custom forms and workflows
+## Get custom forms and workflows [GetFormsAndWorkflows.ps1]
 
 The script detects 3 objects:
 1. InfoPath forms
@@ -71,7 +75,7 @@ You can add `-Verbose` to display more information in the terminal.
 .\GetFormsAndWorkflows.ps1 -Env LAB -OutputFilePath "ExportFormsAndWorkflows.csv" -Verbose
 ~~~
 
-## Get custom timer jobs
+## Get custom timer jobs [GetTimerJobs.ps1]
 
 Returns the custom timer jobs (not `Microsoft`) deployed on the farm.
 
@@ -85,7 +89,7 @@ You can add `-Verbose` to display more information in the terminal.
 .\GetTimerJobs.ps1 -Env LAB -OutputFilePath "ExportTimerJobs.csv" -Verbose
 ~~~
 
-## Get errors on content databases
+## Get errors on content databases [GetTestContentDatabases.ps1]
 
 ~~~powershell
 .\GetTestContentDatabases.ps1 -Env LAB -OutputFilePath "ExportTestContentDatabase.csv"
@@ -97,7 +101,7 @@ You can add `-Verbose` to display more information in the terminal.
 .\GetTestContentDatabases.ps1 -Env LAB -OutputFilePath "ExportTestContentDatabase.csv" -Verbose
 ~~~
 
-## Get search managed properties and crawl duration
+## Get search managed properties and crawl duration [GetSearchConfiguration.ps1]
 
 The script returns the search managed properties and the last crawl duration for each sources.
 
@@ -114,7 +118,7 @@ You can add `-Verbose` to display more information in the terminal.
 ~~~
 
 
-## Get errors from the central administration health reports 
+## Get errors from the central administration health reports [GetHealthData.ps1]
 
 ~~~powershell
 .\GetHealthData.ps1 -Env LAB -OutputFilePath "ExportHealthData.csv"

@@ -6,7 +6,6 @@ param(
 )
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-$OutputFilePath = "$ScriptDirectory/$OutputFilePath"
 try {
     . ("$ScriptDirectory\_Helpers.ps1")
 }
@@ -16,22 +15,6 @@ catch {
 }
 
 Invoke-Start $MyInvocation.MyCommand.Name $ScriptDirectory
-
-try {
-    $config = Get-Config $Env
-    $config
-
-    ExportSearchCrawlDuration -outputFilePath $OutputFilePathCrawl -sep $config.Sep
-
-    ExportSearchManagedProperties -outputFilePath $OutputFilePathManagedProperties -sep $config.Sep
-}
-catch {
-    Write-Error $_
-}
-finally {
-    Invoke-Stop
-}
-
 
 function ExportSearchCrawlDuration {
     param(
@@ -73,6 +56,23 @@ function ExportSearchManagedProperties {
     }
 
     Write-Host "Export-CSV to $outputFilePath" -NoNewline:$True
-    $outputObj | Export-CSV -Path $outputFilePath -NoTypeInformation -Append -Delimiter $sep
+    $outputObj | Export-CSV -Path $outputFilePath -NoTypeInformation -Append -Delimiter $sep -Encoding UTF8
     Write-Host " [OK]" -ForegroundColor Green
+}
+
+try {
+    $config = Get-Config $Env
+    $config
+
+    $OutputFilePathCrawl = "$($config.OutputDir)/$OutputFilePathCrawl"
+    ExportSearchCrawlDuration -outputFilePath $OutputFilePathCrawl -sep $config.Sep
+
+    $OutputFilePathManagedProperties = "$($config.OutputDir)/$OutputFilePathManagedProperties"
+    ExportSearchManagedProperties -outputFilePath $OutputFilePathManagedProperties -sep $config.Sep
+}
+catch {
+    Write-Error $_
+}
+finally {
+    Invoke-Stop
 }

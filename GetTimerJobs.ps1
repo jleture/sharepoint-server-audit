@@ -5,7 +5,6 @@ param(
 )
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-$OutputFilePath = "$ScriptDirectory/$OutputFilePath"
 try {
     . ("$ScriptDirectory\_Helpers.ps1")
 }
@@ -15,20 +14,6 @@ catch {
 }
 
 Invoke-Start $MyInvocation.MyCommand.Name $ScriptDirectory
-
-try {
-    $config = Get-Config $Env
-    $config
-
-    ExportTimerJobs -outputFilePath $OutputFilePath -sep $config.Sep
-}
-catch {
-    Write-Error $_
-}
-finally {
-    Invoke-Stop
-}
-
 
 function ExportTimerJobs {
     param(
@@ -50,6 +35,20 @@ function ExportTimerJobs {
     }
 
     Write-Host "Export-CSV to $outputFilePath" -NoNewline:$True
-    $outputObj | Export-CSV -Path $outputFilePath -NoTypeInformation -Append -Delimiter $sep
+    $outputObj | Export-CSV -Path $outputFilePath -NoTypeInformation -Append -Delimiter $sep -Encoding UTF8
     Write-Host " [OK]" -ForegroundColor Green
+}
+
+try {
+    $config = Get-Config $Env
+    $config
+
+    $OutputFilePath = "$($config.OutputDir)/$OutputFilePath"
+    ExportTimerJobs -outputFilePath $OutputFilePath -sep $config.Sep
+}
+catch {
+    Write-Error $_
+}
+finally {
+    Invoke-Stop
 }

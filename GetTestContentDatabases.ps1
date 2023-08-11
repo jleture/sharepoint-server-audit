@@ -5,7 +5,6 @@ param(
 )
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-$OutputFilePath = "$ScriptDirectory/$OutputFilePath"
 try {
     . ("$ScriptDirectory\_Helpers.ps1")
 }
@@ -15,22 +14,6 @@ catch {
 }
 
 Invoke-Start $MyInvocation.MyCommand.Name $ScriptDirectory
-
-try {
-    $config = Get-Config $Env
-    $config
-
-    foreach ($webApp in $config.WebApplications) {
-        ExportTestContentDatabase -webappUrl $webApp -outputFilePath $OutputFilePath -sep $config.Sep
-    }
-}
-catch {
-    Write-Error $_
-}
-finally {
-    Invoke-Stop
-}
-
 
 function ExportTestContentDatabase {
     param(
@@ -102,4 +85,20 @@ function ExportTestContentDatabase {
     Write-Host "Export-CSV to $outputFilePath" -NoNewline:$True
     $outputObj | Export-CSV -Path $outputFilePath -NoTypeInformation -Append -Delimiter $sep
     Write-Host " [OK]" -ForegroundColor Green
+}
+
+try {
+    $config = Get-Config $Env
+    $config
+
+    $OutputFilePath = "$($config.OutputDir)/$OutputFilePath"
+    foreach ($webApp in $config.WebApplications) {
+        ExportTestContentDatabase -webappUrl $webApp -outputFilePath $OutputFilePath -sep $config.Sep -Encoding UTF8
+    }
+}
+catch {
+    Write-Error $_
+}
+finally {
+    Invoke-Stop
 }

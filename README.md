@@ -5,7 +5,7 @@ PowerShell scripts to audit SharePoint Server sites
 | File | Role |
 | - | - |
 | **_Helpers.ps1** | Useful methods |
-| **Config.Lab.json** | Configuration file with tenant and SharePoint URL, app registration and CSV separator |
+| **Config.LAB.json** | Configuration file with tenant and SharePoint URL, app registration and CSV separator |
 | **GetSharePointWebParts.ps1** | Script to get webparts used in SharePoint sites |
 | **GetTestContentDatabases.ps1** | Script to get errors in content databases |
 | **GetFormsAndWorkflows.ps1** | Script to get worflows and custom forms |
@@ -26,7 +26,7 @@ When executing the scripts, the code-name of the configuration should be passed 
 .\GetSharePointWebParts.ps1 -Env PROD
 ~~~
 
-To connect to SharePoint, it's better to XXX.
+Sample of `Config.LAB.json`:
 
 ~~~json
 {
